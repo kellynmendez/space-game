@@ -8,6 +8,9 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float _moveSpeed = 14f;
     [SerializeField] float _turnSpeed = 3f;
 
+    [Header("Feedback")]
+    [SerializeField] TrailRenderer _trail = null;
+
     Rigidbody _rb = null;
     UIController _uiController = null;
     int _collectibleCount = 0;
@@ -15,6 +18,7 @@ public class PlayerShip : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _trail.enabled = false;
         _uiController = FindObjectOfType<UIController>();
     }
 
@@ -70,5 +74,17 @@ public class PlayerShip : MonoBehaviour
     {
         Debug.Log("Player has won the game!");
         this.gameObject.SetActive(false);
+    }
+
+    public void SetSpeed(float speedChange)
+    {
+        _moveSpeed += speedChange;
+        // TODO audio/visuals
+
+    }
+
+    public void SetBoosters(bool activeState)
+    {
+        _trail.enabled = activeState;
     }
 }
