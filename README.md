@@ -1,4 +1,4 @@
-# space-game
+# Space Game
  
 Project 1 - Scripting for Games (ATCM 3368)
 
