@@ -6,7 +6,7 @@ The goal of this game is to move through the space debris and reach the end whil
 
 Control Scheme:
 
-W/Up: Forward movement
-S/Down: Backward movement
-A/Left: Rotate counter-clockwise
+W/Up: Forward movement\
+S/Down: Backward movement\
+A/Left: Rotate counter-clockwise\
 D/Right: Rotate clockwise
