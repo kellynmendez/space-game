@@ -9,6 +9,9 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float _moveSpeed = 14f;
     [SerializeField] float _turnSpeed = 3f;
 
+    [Header("Damage spin")]
+    [SerializeField] float _rotationSpeed = 3f;
+
     [Header("Setup")]
     [SerializeField] GameObject _visualsToDeactivate = null;
 
@@ -19,10 +22,12 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] AudioClip _winSFX = null;
 
     bool _playerIsDead = false;
+    bool _damaged = false;
     AudioSource _audioSource = null;
     Rigidbody _rb = null;
     UIController _uiController = null;
     int _collectibleCount = 0;
+    int _collectScoreIncr = 100;
 
     private void Awake()
     {
@@ -36,9 +41,18 @@ public class PlayerShip : MonoBehaviour
     {
         if (_playerIsDead)
             return;
-        
+
         MoveShip();
         TurnShip();
+    }
+
+    private void Update()
+    {
+        if (_damaged)
+        {
+            Debug.Log("spinning!");
+            SpinDamage();
+        }
     }
 
     // Uses forces to build momentum forward/backward
@@ -63,6 +77,11 @@ public class PlayerShip : MonoBehaviour
         _rb.MoveRotation(_rb.rotation * turnOffset);
     }
 
+    void SpinDamage()
+    {
+        transform.Rotate(0f, _rotationSpeed, 0f, Space.Self);
+    }
+
     public void AddCollectible()
     {
         if (_uiController == null)
@@ -73,7 +92,7 @@ public class PlayerShip : MonoBehaviour
         }
 
         // update the count
-        _collectibleCount = _collectibleCount + 1;
+        _collectibleCount = _collectibleCount + _collectScoreIncr;
         _uiController.UpdateCollectibleCount(_collectibleCount);
     }
 
@@ -101,6 +120,17 @@ public class PlayerShip : MonoBehaviour
     public void SetBoosters(bool activeState)
     {
         _trail.enabled = activeState;
+    }
+
+    public void ShipDamaged()
+    {
+        _damaged = true;
+    }
+
+    public void ShipDamageDone()
+    {
+        _damaged = false;
+        transform.Rotate(0, 0, 0);
     }
 
     private void PlayDeathFX()
