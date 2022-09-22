@@ -5,12 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerShip : MonoBehaviour
 {
+    [Header("Speed variables")]
     [SerializeField] float _moveSpeed = 14f;
     [SerializeField] float _turnSpeed = 3f;
 
+    [Header("Setup")]
+    [SerializeField] GameObject _visualsToDeactivate = null;
+
     [Header("Feedback")]
     [SerializeField] TrailRenderer _trail = null;
+    [SerializeField] AudioClip _deathSFX = null;
+    [SerializeField] ParticleSystem _deathParticles = null;
+    [SerializeField] AudioClip _winSFX = null;
 
+    bool _playerIsDead = false;
+    AudioSource _audioSource = null;
     Rigidbody _rb = null;
     UIController _uiController = null;
     int _collectibleCount = 0;
@@ -20,10 +29,14 @@ public class PlayerShip : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _trail.enabled = false;
         _uiController = FindObjectOfType<UIController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
     {
+        if (_playerIsDead)
+            return;
+        
         MoveShip();
         TurnShip();
     }
@@ -67,24 +80,55 @@ public class PlayerShip : MonoBehaviour
     public void Kill()
     {
         Debug.Log("Player has been killed!");
-        this.gameObject.SetActive(false);
+        DisableDeathObjects();
+        PlayDeathFX();
+        _playerIsDead = true;
     }
 
     public void Win()
     {
         Debug.Log("Player has won the game!");
-        this.gameObject.SetActive(false);
+        _playerIsDead = true;
+        DisableDeathObjects();
+        PlayWinFX();
     }
 
     public void SetSpeed(float speedChange)
     {
         _moveSpeed += speedChange;
-        // TODO audio/visuals
-
     }
 
     public void SetBoosters(bool activeState)
     {
         _trail.enabled = activeState;
+    }
+
+    private void PlayDeathFX()
+    {
+        Debug.Log("playing death fx");
+        if (_deathParticles != null)
+        {
+            _deathParticles.Play();
+        }
+        if (_audioSource != null && _deathSFX != null)
+        {
+            _audioSource.volume = 150;
+            _audioSource.PlayOneShot(_deathSFX, _audioSource.volume);
+        }
+    }
+    private void PlayWinFX()
+    {
+        if (_audioSource != null && _winSFX != null)
+        {
+            _audioSource.PlayOneShot(_winSFX, _audioSource.volume);
+        }
+    }
+
+    private void DisableDeathObjects()
+    {
+        _visualsToDeactivate.SetActive(false);
+        _rb.detectCollisions = false;
+        _rb.velocity = Vector3.zero;
+        _rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerupSpeed : MonoBehaviour
+public class PowerdownDamage : MonoBehaviour
 {
     [Header("Powerup Settings")]
     [SerializeField] float _speedIncreaseAmount = 20;
@@ -11,24 +11,17 @@ public class PowerupSpeed : MonoBehaviour
     [Header("Setup ")]
     [SerializeField] GameObject _visualsToDeactivate = null;
 
-    [Header("Feedback")]
-    [SerializeField] AudioClip _puSpeedSFX = null;
-    [SerializeField] ParticleSystem _puSpeedParticle = null;
-
-    AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
     bool _poweredUp = false;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
         _colliderToDeactivate = GetComponent<Collider>();
         EnableObject();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collected powerup");
         PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
         // if we have a valid player and not already powered up
         if (playerShip != null && _poweredUp == false)
@@ -85,7 +78,7 @@ public class PowerupSpeed : MonoBehaviour
         // disable visuals to simulate deactivated
         _visualsToDeactivate.SetActive(false);
         // TODO deactivate particle flash/audio
-        PlayFX();
+
     }
 
     public void EnableObject()
@@ -95,24 +88,8 @@ public class PowerupSpeed : MonoBehaviour
         // enable visuals again to draw player attention
         _visualsToDeactivate.SetActive(true);
         // TODO reactivate particle flash/audio
-        
-    }
 
-    
-    private void PlayFX()
-    {
-        // play gfx
-        if (_puSpeedParticle != null)
-        {
-            _puSpeedParticle.Play();
-        }
-        // play sfx
-        if (_audioSource != null && _puSpeedSFX != null)
-        {
-            _audioSource.PlayOneShot(_puSpeedSFX, _audioSource.volume);
-        }
     }
-    
 }
 
 
