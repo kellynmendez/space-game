@@ -21,6 +21,8 @@ public class SpinDamage : MonoBehaviour
     Collider _colliderToDeactivate = null;
     private Vector3 _targetPosition;
     bool _damaged = false;
+    int _mushroomScoreIncr = 50;
+    int _damageDebrisScoreDecr = -20;
 
     private void Awake()
     {
@@ -56,12 +58,16 @@ public class SpinDamage : MonoBehaviour
             {
                 // Disabling debris
                 DisableObject(_mushroomSFX);
+                // adding to score
+                playerShip.UpdateScore(_mushroomScoreIncr);
             }
             // if we have a valid player and not currently damaged
             else if (playerShip != null && _damaged == false)
             {
                 // start powerup timer; restart if it's already started
                 StartCoroutine(DamageSpinSequence(playerShip));
+                // subtracting from score
+                playerShip.UpdateScore(_damageDebrisScoreDecr);
             }
         }
             

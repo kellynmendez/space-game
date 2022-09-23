@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerShip : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float _turnSpeed = 3f;
 
     [Header("Damage spin")]
-    [SerializeField] float _rotationSpeed = 3f;
+    [SerializeField] float _rotationSpeed = 5f;
 
     [Header("Setup")]
     [SerializeField] GameObject _visualsToDeactivate = null;
@@ -27,9 +28,9 @@ public class PlayerShip : MonoBehaviour
     AudioSource _audioSource = null;
     Rigidbody _rb = null;
     UIController _uiController = null;
+    ScoreManager _scoreManager = null;
     TrailRenderer _trailRend;
-    int _collectibleCount = 0;
-    int _collectScoreIncr = 100;
+    int _score = 0;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class PlayerShip : MonoBehaviour
         _trail.enabled = false;
         _trailRend = _trail.GetComponent<TrailRenderer>();
         _uiController = FindObjectOfType<UIController>();
+        _scoreManager = FindObjectOfType<ScoreManager>();
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -85,34 +87,38 @@ public class PlayerShip : MonoBehaviour
         transform.Rotate(0f, _rotationSpeed, 0f, Space.Self);
     }
 
-    public void AddCollectible()
+    public bool IsPlayerDead()
     {
-        if (_uiController == null)
-        {
-            Debug.LogError("No UIController prefab in the scene. " +
-                "UIController is needed to display collectible count!");
-            return;
-        }
-
-        // update the count
-        _collectibleCount = _collectibleCount + _collectScoreIncr;
-        _uiController.UpdateCollectibleCount(_collectibleCount);
+        return _playerIsDead;
     }
 
-    public void Kill()
+    public void UpdateScore(int scoreIncrement)
+    {
+        // update the count
+        _score += scoreIncrement;
+        _uiController.UpdateScoreUI(_score);
+        _scoreManager.DisplayScoreUpdate(scoreIncrement);
+    }
+
+    public void Kill(bool killedByTimer)
     {
         Debug.Log("Player has been killed!");
         DisableDeathObjects();
         PlayDeathFX();
         _playerIsDead = true;
+        if (!killedByTimer)
+        {
+            _uiController.DeactivateTimer();
+        }
     }
 
     public void Win()
     {
         Debug.Log("Player has won the game!");
-        _playerIsDead = true;
         DisableDeathObjects();
         PlayWinFX();
+        _playerIsDead = true;
+        _uiController.DeactivateTimer();
     }
 
     public bool InMushroomMode()

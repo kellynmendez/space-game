@@ -12,6 +12,7 @@ public class Collectible : MonoBehaviour
     [SerializeField] ParticleSystem _collectibleParticle = null;
 
     AudioSource _audioSource = null;
+    int _collectScoreIncr = 100;
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class Collectible : MonoBehaviour
         PlayerShip _playerShip = other.attachedRigidbody.GetComponent<PlayerShip>();
         if (_playerShip != null)
         {
-            _playerShip.AddCollectible();
+            _playerShip.UpdateScore(_collectScoreIncr);
             PlayFX();
         }
 

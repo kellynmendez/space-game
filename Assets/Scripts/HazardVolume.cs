@@ -16,6 +16,7 @@ public class HazardVolume : MonoBehaviour
     AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
     UIController _uiController = null;
+    int _mushroomScoreIncr = 50;
 
     private void Awake()
     {
@@ -37,12 +38,14 @@ public class HazardVolume : MonoBehaviour
             {
                 // Disabling debris
                 DisableObject();
+                // adding to score
+                playerShip.UpdateScore(_mushroomScoreIncr);
             }
             // If we found something valid, continue
             else if (playerShip != null)
             {
                 _uiController.ShowText(loseText);
-                playerShip.Kill();
+                playerShip.Kill(false);
             }
         }
     }

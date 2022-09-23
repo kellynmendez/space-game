@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] Text _collectibleTextUI = null;
     [SerializeField] Text _finishedGameTextUI = null;
+    [SerializeField] GameObject _timer = null;
 
     void Start()
     {
@@ -27,8 +28,13 @@ public class UIController : MonoBehaviour
         _finishedGameTextUI.gameObject.SetActive(true);
     }
 
-    public void UpdateCollectibleCount(int collectibleCount)
+    public void UpdateScoreUI(int collectibleCount)
     {
         _collectibleTextUI.text = collectibleCount.ToString();
+    }
+
+    public void DeactivateTimer()
+    {
+        _timer.SetActive(false);
     }
 }
