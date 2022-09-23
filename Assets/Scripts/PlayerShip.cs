@@ -117,6 +117,11 @@ public class PlayerShip : MonoBehaviour
         _moveSpeed += speedChange;
     }
 
+    public void SetScale(float scaleChange)
+    {
+        transform.localScale *= scaleChange;
+    }
+
     public void SetBoosters(bool activeState)
     {
         _trail.enabled = activeState;

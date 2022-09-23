@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerupSpeed : MonoBehaviour
+public class PowerupDestroy : MonoBehaviour
 {
     [Header("Powerup Settings")]
-    [SerializeField] float _speedIncreaseAmount = 20;
+    [SerializeField] float _sizeIncreaseAmount = 2;
     [SerializeField] float _powerupDuration = 5;
 
     [Header("Setup ")]
@@ -28,7 +28,7 @@ public class PowerupSpeed : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collected speed powerup");
+        Debug.Log("collected mushroom powerup");
         PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
         // if we have a valid player and not already powered up
         if (playerShip != null && _poweredUp == false)
@@ -52,6 +52,7 @@ public class PowerupSpeed : MonoBehaviour
         // wait for the required duration
         yield return new WaitForSeconds(_powerupDuration);
         // reset
+        Debug.Log("resetting size!");
         DeactivatePowerup(playerShip);
         EnableObject();
 
@@ -64,7 +65,7 @@ public class PowerupSpeed : MonoBehaviour
         if (playerShip != null)
         {
             // powerup player
-            playerShip.SetSpeed(_speedIncreaseAmount);
+            playerShip.SetScale(_sizeIncreaseAmount);
             // visuals
             playerShip.SetBoosters(true);
         }
@@ -73,7 +74,7 @@ public class PowerupSpeed : MonoBehaviour
     void DeactivatePowerup(PlayerShip playerShip)
     {
         // revert player powerup - will subtract
-        playerShip?.SetSpeed(-_speedIncreaseAmount);
+        playerShip?.SetScale(_sizeIncreaseAmount * (1 / _sizeIncreaseAmount));
         // visuals
         playerShip?.SetBoosters(false);
     }
@@ -95,10 +96,10 @@ public class PowerupSpeed : MonoBehaviour
         // enable visuals again to draw player attention
         _visualsToDeactivate.SetActive(true);
         // TODO reactivate particle flash/audio
-        
+
     }
 
-    
+
     private void PlayFX()
     {
         // play gfx
@@ -112,19 +113,5 @@ public class PowerupSpeed : MonoBehaviour
             _audioSource.PlayOneShot(_puSpeedSFX, _audioSource.volume);
         }
     }
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

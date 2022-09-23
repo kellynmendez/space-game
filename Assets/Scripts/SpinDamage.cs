@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SpinDamage : MonoBehaviour
 {
-    [Header("Spin Settings")]
     [SerializeField] float _damageDuration = 1;
+    [SerializeField] float _movementSpeed = 20f;
+    [SerializeField] float _targetOffsetX = -210f;
+    [SerializeField] float _targetOffsetZ = -200f;
 
     [Header("Setup ")]
     [SerializeField] GameObject _visualsToDeactivate = null;
@@ -16,12 +18,30 @@ public class SpinDamage : MonoBehaviour
 
     AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
+    private Vector3 _targetPosition;
     bool _damaged = false;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _colliderToDeactivate = GetComponent<Collider>();
+        _targetPosition = new Vector3(
+            transform.position.x + _targetOffsetX,
+            0,
+            transform.position.z + _targetOffsetZ);
+    }
+
+    private void Update()
+    {
+        // move position a step closer to the target.
+        var step = _movementSpeed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, step);
+
+        // check if the position of the debris and the target point are approximately equal.
+        if (Vector3.Distance(transform.position, _targetPosition) < 0.001f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
