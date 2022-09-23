@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 14
   _turnSpeed: 3
-  _rotationSpeed: 5
+  _rotationSpeed: 10
   _visualsToDeactivate: {fileID: 2339678449645982778}
   _trail: {fileID: 2339678449448250369}
   _deathSFX: {fileID: 8300000, guid: 89e449aaabbf9344f865103183d8616f, type: 3}

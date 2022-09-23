@@ -21,7 +21,7 @@ public class SpinDamage : MonoBehaviour
     Collider _colliderToDeactivate = null;
     private Vector3 _targetPosition;
     bool _damaged = false;
-    int _mushroomScoreIncr = 50;
+    int _mushroomScoreIncr = 100;
     int _damageDebrisScoreDecr = -20;
 
     private void Awake()

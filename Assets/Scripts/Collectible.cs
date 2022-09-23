@@ -12,7 +12,7 @@ public class Collectible : MonoBehaviour
     [SerializeField] ParticleSystem _collectibleParticle = null;
 
     AudioSource _audioSource = null;
-    int _collectScoreIncr = 100;
+    int _collectScoreIncr = 60;
 
     private void Awake()
     {

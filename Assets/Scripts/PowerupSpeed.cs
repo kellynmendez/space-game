@@ -15,6 +15,7 @@ public class PowerupSpeed : MonoBehaviour
     [SerializeField] AudioClip _puSpeedSFX = null;
     [SerializeField] ParticleSystem _puSpeedParticle = null;
 
+    int _speedScoreIncr = 50;
     AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
     bool _poweredUp = false;
@@ -29,13 +30,18 @@ public class PowerupSpeed : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("collected speed powerup");
-        PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
-        // if we have a valid player and not already powered up
-        if (playerShip != null && _poweredUp == false)
+        if (other.tag == "Player")
         {
-            // start powerup timer; restart if it's already started
-            StartCoroutine(PowerupSequence(playerShip));
+            PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
+            playerShip.UpdateScore(_speedScoreIncr);
+            // if we have a valid player and not already powered up
+            if (playerShip != null && _poweredUp == false)
+            {
+                // start powerup timer; restart if it's already started
+                StartCoroutine(PowerupSequence(playerShip));
+            }
         }
+        
     }
 
     IEnumerator PowerupSequence(PlayerShip playerShip)

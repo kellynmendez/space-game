@@ -39,7 +39,7 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
-            textComp.text = "-" + scoreIncrement.ToString();
+            textComp.text = scoreIncrement.ToString();
             textComp.color = Color.red;
         }
         // Getting canvas group

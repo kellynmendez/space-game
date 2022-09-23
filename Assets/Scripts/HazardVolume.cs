@@ -16,7 +16,7 @@ public class HazardVolume : MonoBehaviour
     AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
     UIController _uiController = null;
-    int _mushroomScoreIncr = 50;
+    int _mushroomScoreIncr = 100;
 
     private void Awake()
     {
