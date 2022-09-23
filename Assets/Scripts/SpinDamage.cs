@@ -14,7 +14,8 @@ public class SpinDamage : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] AudioClip _damageSFX = null;
-    [SerializeField] ParticleSystem _damageParticle = null;
+    [SerializeField] AudioClip _mushroomSFX = null;
+    [SerializeField] ParticleSystem _explodeParticle = null;
 
     AudioSource _audioSource = null;
     Collider _colliderToDeactivate = null;
@@ -47,13 +48,23 @@ public class SpinDamage : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("ship is damaged");
-        PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
-        // if we have a valid player and not currently damaged
-        if (playerShip != null && _damaged == false)
+        if (other.gameObject.tag == "Player")
         {
-            // start powerup timer; restart if it's already started
-            StartCoroutine(DamageSpinSequence(playerShip));
+            PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
+            bool _mushroomMode = playerShip.InMushroomMode();
+            if (_mushroomMode)
+            {
+                // Disabling debris
+                DisableObject(_mushroomSFX);
+            }
+            // if we have a valid player and not currently damaged
+            else if (playerShip != null && _damaged == false)
+            {
+                // start powerup timer; restart if it's already started
+                StartCoroutine(DamageSpinSequence(playerShip));
+            }
         }
+            
     }
 
     IEnumerator DamageSpinSequence(PlayerShip playerShip)
@@ -63,7 +74,7 @@ public class SpinDamage : MonoBehaviour
 
         ActivateDamageSpin(playerShip);
         // Disabling object
-        DisableObject();
+        DisableObject(_damageSFX);
 
         // wait for the required duration
         yield return new WaitForSeconds(_damageDuration);
@@ -90,28 +101,28 @@ public class SpinDamage : MonoBehaviour
         playerShip?.SetBoosters(false);
     }
 
-    public void DisableObject()
+    public void DisableObject(AudioClip _sfx)
     {
         // disable collider so it can't be retriggered
         _colliderToDeactivate.enabled = false;
         // disable visuals to simulate deactivated
         _visualsToDeactivate.SetActive(false);
         // deactivate particle flash/audio
-        PlayFX();
+        PlayFX(_sfx);
     }
 
 
-    private void PlayFX()
+    private void PlayFX(AudioClip _sfx)
     {
         // play gfx
-        if (_damageParticle != null)
+        if (_explodeParticle != null)
         {
-            _damageParticle.Play();
+            _explodeParticle.Play();
         }
         // play sfx
-        if (_audioSource != null && _damageSFX != null)
+        if (_audioSource != null && _sfx != null)
         {
-            _audioSource.PlayOneShot(_damageSFX, _audioSource.volume);
+            _audioSource.PlayOneShot(_sfx, _audioSource.volume);
         }
     }
 

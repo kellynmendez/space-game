@@ -4978,7 +4978,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7823968909268478594}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.675}
+  m_LocalPosition: {x: 0, y: 0, z: -1.556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5036,7 +5036,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5188717
+        value: 0.7254902
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5392,7 +5392,7 @@ GameObject:
   - component: {fileID: 3729067387067600811}
   m_Layer: 0
   m_Name: PlayerShip
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5458,7 +5458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 14
   _turnSpeed: 3
-  _rotation: {x: 0, y: 10, z: 0}
+  _rotationSpeed: 3
   _visualsToDeactivate: {fileID: 7823968909468570296}
   _trail: {fileID: 7823968909268478595}
   _deathSFX: {fileID: 8300000, guid: 89e449aaabbf9344f865103183d8616f, type: 3}

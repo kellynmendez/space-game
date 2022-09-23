@@ -23,9 +23,11 @@ public class PlayerShip : MonoBehaviour
 
     bool _playerIsDead = false;
     bool _damaged = false;
+    bool _mushroomMode = false;
     AudioSource _audioSource = null;
     Rigidbody _rb = null;
     UIController _uiController = null;
+    TrailRenderer _trailRend;
     int _collectibleCount = 0;
     int _collectScoreIncr = 100;
 
@@ -33,6 +35,7 @@ public class PlayerShip : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _trail.enabled = false;
+        _trailRend = _trail.GetComponent<TrailRenderer>();
         _uiController = FindObjectOfType<UIController>();
         _audioSource = GetComponent<AudioSource>();
     }
@@ -112,6 +115,17 @@ public class PlayerShip : MonoBehaviour
         PlayWinFX();
     }
 
+    public bool InMushroomMode()
+    {
+        return _mushroomMode;
+    }
+
+    public void SetMushroomMode(bool mushroomy)
+    {
+        _mushroomMode = mushroomy;
+    }
+
+
     public void SetSpeed(float speedChange)
     {
         _moveSpeed += speedChange;
@@ -120,6 +134,7 @@ public class PlayerShip : MonoBehaviour
     public void SetScale(float scaleChange)
     {
         transform.localScale *= scaleChange;
+        _trailRend.time *= scaleChange;
     }
 
     public void SetBoosters(bool activeState)

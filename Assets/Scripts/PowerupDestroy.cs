@@ -52,7 +52,6 @@ public class PowerupDestroy : MonoBehaviour
         // wait for the required duration
         yield return new WaitForSeconds(_powerupDuration);
         // reset
-        Debug.Log("resetting size!");
         DeactivatePowerup(playerShip);
         EnableObject();
 
@@ -65,6 +64,7 @@ public class PowerupDestroy : MonoBehaviour
         if (playerShip != null)
         {
             // powerup player
+            playerShip.SetMushroomMode(true);
             playerShip.SetScale(_sizeIncreaseAmount);
             // visuals
             playerShip.SetBoosters(true);
@@ -73,8 +73,9 @@ public class PowerupDestroy : MonoBehaviour
 
     void DeactivatePowerup(PlayerShip playerShip)
     {
-        // revert player powerup - will subtract
-        playerShip?.SetScale(_sizeIncreaseAmount * (1 / _sizeIncreaseAmount));
+        // revert player powerup
+        playerShip.SetMushroomMode(false);
+        playerShip?.SetScale(1 / _sizeIncreaseAmount);
         // visuals
         playerShip?.SetBoosters(false);
     }
@@ -95,8 +96,6 @@ public class PowerupDestroy : MonoBehaviour
         _colliderToDeactivate.enabled = true;
         // enable visuals again to draw player attention
         _visualsToDeactivate.SetActive(true);
-        // TODO reactivate particle flash/audio
-
     }
 
 
